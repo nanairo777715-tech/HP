@@ -581,6 +581,79 @@
   .access-cta p{ color:var(--plum-soft); font-size:.92rem; margin-bottom:28px; }
   .access-cta .btn{ width:100%; margin-bottom:12px; }
 
+  /* ---------- Reservation ---------- */
+  .reservation{
+    margin-top:56px;
+    background:var(--card-bg);
+    border-radius:24px;
+    padding:clamp(28px,4vw,48px);
+    box-shadow:var(--shadow);
+  }
+  .reservation h3{
+    font-family:var(--font-jp-serif);
+    font-size:1.3rem;
+    margin-bottom:8px;
+  }
+  .reservation > p{
+    color:var(--plum-soft);
+    font-size:.92rem;
+    margin-bottom:28px;
+    max-width:46em;
+  }
+  .reservation-form{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:20px 24px;
+  }
+  .reservation-form .field-full{ grid-column:1 / -1; }
+  .reservation-form label{
+    display:block;
+    font-size:.82rem;
+    color:var(--plum-soft);
+    margin-bottom:6px;
+    letter-spacing:.03em;
+  }
+  .reservation-form label .req{ color:var(--rose-strong); margin-left:.3em; }
+  .reservation-form input,
+  .reservation-form select,
+  .reservation-form textarea{
+    width:100%;
+    font-family:var(--font-jp-sans);
+    font-size:.95rem;
+    color:var(--plum);
+    background:var(--ivory);
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:.75em .9em;
+  }
+  .reservation-form textarea{ resize:vertical; min-height:5em; }
+  .reservation-form input:focus,
+  .reservation-form select:focus,
+  .reservation-form textarea:focus{
+    outline:2px solid var(--gold);
+    outline-offset:1px;
+  }
+  .reservation-form button[type="submit"]{
+    grid-column:1 / -1;
+    justify-self:start;
+    margin-top:8px;
+  }
+  .reservation-msg{
+    margin-top:16px;
+    font-size:.88rem;
+    min-height:1.4em;
+  }
+  .reservation-msg.is-success{ color:var(--rose-strong); }
+  .reservation-msg.is-error{ color:#B4433A; }
+  .reservation-note{
+    font-size:.8rem;
+    color:var(--plum-soft);
+    margin-top:10px;
+  }
+  @media (max-width:640px){
+    .reservation-form{ grid-template-columns:1fr; }
+  }
+
   /* ---------- Footer ---------- */
   footer{
     position:relative;
@@ -938,6 +1011,53 @@
           <a href="#" class="btn btn-ghost">Instagramでご予約</a>
         </div>
       </div>
+
+      <div class="reservation reveal">
+        <h3 class="jp-serif" style="font-style:normal;">オンラインでのご予約</h3>
+        <p>フォームからご希望日時をお送りいただくと、当店のカレンダーに直接お申し込みが届きます。内容を確認のうえ、ご登録のメールまたはお電話にて確定のご連絡をいたします。</p>
+        <form id="reservationForm" class="reservation-form">
+          <div>
+            <label for="rsvName">お名前<span class="req">*</span></label>
+            <input type="text" id="rsvName" name="name" required autocomplete="name">
+          </div>
+          <div>
+            <label for="rsvPhone">電話番号<span class="req">*</span></label>
+            <input type="tel" id="rsvPhone" name="phone" required autocomplete="tel" placeholder="090-1234-5678">
+          </div>
+          <div class="field-full">
+            <label for="rsvEmail">メールアドレス<span class="req">*</span></label>
+            <input type="email" id="rsvEmail" name="email" required autocomplete="email" placeholder="ご予約確認メールをお送りします">
+          </div>
+          <div class="field-full">
+            <label for="rsvMenu">ご希望メニュー<span class="req">*</span></label>
+            <select id="rsvMenu" name="menu" required>
+              <option value="" disabled selected>選択してください</option>
+              <option>ワンカラー</option>
+              <option>フレンチ・グラデーション</option>
+              <option>デザインアート</option>
+              <option>甘皮ケア&amp;ハンドマッサージ</option>
+              <option>パラフィンパック</option>
+            </select>
+          </div>
+          <div>
+            <label for="rsvDate">ご希望日<span class="req">*</span></label>
+            <input type="date" id="rsvDate" name="date" required>
+          </div>
+          <div>
+            <label for="rsvTime">ご希望時間<span class="req">*</span></label>
+            <select id="rsvTime" name="time" required>
+              <option value="" disabled selected>選択してください</option>
+            </select>
+          </div>
+          <div class="field-full">
+            <label for="rsvNotes">ご要望・備考</label>
+            <textarea id="rsvNotes" name="notes" placeholder="デザインのご希望や、その他ご要望があればご記入ください"></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary">この内容で予約を送信する</button>
+        </form>
+        <p id="reservationMsg" class="reservation-msg" role="status" aria-live="polite"></p>
+        <p class="reservation-note">&#8226; 定休日(月曜・第3日曜)および営業時間外(11:00〜最終受付17:30)はご予約いただけません。</p>
+      </div>
     </div>
   </section>
 </main>
@@ -985,6 +1105,108 @@
     document.querySelectorAll('.reveal').forEach(function(el){ io.observe(el); });
   } else {
     document.querySelectorAll('.reveal').forEach(function(el){ el.classList.add('is-visible'); });
+  }
+
+  // ---------- Reservation form (Google Apps Script 連携) ----------
+  // GASをデプロイしたら発行される Web アプリURL(/exec で終わるもの)をここに設定してください
+  var RESERVATION_ENDPOINT = '';
+
+  var rsvForm = document.getElementById('reservationForm');
+  var rsvMsg = document.getElementById('reservationMsg');
+  var rsvDateInput = document.getElementById('rsvDate');
+  var rsvTimeSelect = document.getElementById('rsvTime');
+
+  function pad2(n){ return n < 10 ? '0' + n : '' + n; }
+
+  function isClosedDay(dateObj){
+    var day = dateObj.getDay(); // 0=日, 1=月
+    var isThirdSunday = day === 0 && Math.ceil(dateObj.getDate() / 7) === 3;
+    return day === 1 || isThirdSunday;
+  }
+
+  function setMsg(text, type){
+    if(!rsvMsg) return;
+    rsvMsg.textContent = text;
+    rsvMsg.className = 'reservation-msg' + (type ? ' ' + type : '');
+  }
+
+  if(rsvTimeSelect){
+    var timeOpts = ['<option value="" disabled selected>選択してください</option>'];
+    for(var h = 11; h <= 17; h++){
+      for(var m = 0; m < 60; m += 30){
+        if(h === 17 && m > 30) continue; // 最終受付 17:30
+        var label = pad2(h) + ':' + pad2(m);
+        timeOpts.push('<option value="' + label + '">' + label + '</option>');
+      }
+    }
+    rsvTimeSelect.innerHTML = timeOpts.join('');
+  }
+
+  if(rsvDateInput){
+    var today = new Date();
+    rsvDateInput.min = today.getFullYear() + '-' + pad2(today.getMonth() + 1) + '-' + pad2(today.getDate());
+    rsvDateInput.addEventListener('change', function(){
+      if(!rsvDateInput.value) return;
+      var d = new Date(rsvDateInput.value + 'T00:00:00');
+      if(isClosedDay(d)){
+        setMsg('選択された日は定休日(月曜・第3日曜)です。別の日をお選びください。', 'is-error');
+      } else {
+        setMsg('', '');
+      }
+    });
+  }
+
+  if(rsvForm){
+    rsvForm.addEventListener('submit', function(ev){
+      ev.preventDefault();
+
+      if(!RESERVATION_ENDPOINT){
+        setMsg('現在オンライン予約フォームは準備中です。お手数ですがお電話またはInstagramにてご予約ください。', 'is-error');
+        return;
+      }
+
+      var d = new Date(rsvDateInput.value + 'T00:00:00');
+      if(isClosedDay(d)){
+        setMsg('選択された日は定休日です。別の日をお選びください。', 'is-error');
+        return;
+      }
+
+      var fd = new FormData(rsvForm);
+      var payload = {
+        name: fd.get('name'),
+        phone: fd.get('phone'),
+        email: fd.get('email'),
+        menu: fd.get('menu'),
+        date: fd.get('date'),
+        time: fd.get('time'),
+        notes: fd.get('notes')
+      };
+
+      var submitBtn = rsvForm.querySelector('button[type="submit"]');
+      submitBtn.disabled = true;
+      setMsg('送信中です…', '');
+
+      fetch(RESERVATION_ENDPOINT, {
+        method: 'POST',
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        body: JSON.stringify(payload)
+      })
+      .then(function(res){ return res.json(); })
+      .then(function(json){
+        if(json.result === 'success'){
+          setMsg('ご予約を受け付けました。確認のご連絡をお待ちください。', 'is-success');
+          rsvForm.reset();
+        } else {
+          setMsg(json.message || '送信に失敗しました。時間をおいて再度お試しください。', 'is-error');
+        }
+      })
+      .catch(function(){
+        setMsg('通信エラーが発生しました。お手数ですがお電話にてご予約ください。', 'is-error');
+      })
+      .finally(function(){
+        submitBtn.disabled = false;
+      });
+    });
   }
 </script>
 
