@@ -645,6 +645,7 @@
   }
   .reservation-msg.is-success{ color:var(--rose-strong); }
   .reservation-msg.is-error{ color:#B4433A; }
+  .reservation-msg.is-info{ color:var(--gold); }
   .reservation-note{
     font-size:.8rem;
     color:var(--plum-soft);
@@ -1108,8 +1109,10 @@
   }
 
   // ---------- Reservation form (Google Apps Script 連携) ----------
-  // GASをデプロイしたら発行される Web アプリURL(/exec で終わるもの)をここに設定してください
-  var RESERVATION_ENDPOINT = 'https://script.google.com/macros/s/AKfycbwvjLenRn-HJ6B82M75NLOYkqBdIRmOcSRAAElort4RFSRl9lg8W75yuNp_IMHTFJpH5w/exec';
+  // 本サイトは「HP制作デモ」用のため、実際の予約送信は意図的に無効化しています。
+  // GAS連携(カレンダー登録・確認メール送信)自体は gas/Code.gs に実装済み・動作確認済みです。
+  // 本番運用する場合は、デプロイしたWebアプリURL(/exec で終わるもの)をここに設定してください。
+  var RESERVATION_ENDPOINT = '';
 
   var rsvForm = document.getElementById('reservationForm');
   var rsvMsg = document.getElementById('reservationMsg');
@@ -1161,7 +1164,7 @@
       ev.preventDefault();
 
       if(!RESERVATION_ENDPOINT){
-        setMsg('現在オンライン予約フォームは準備中です。お手数ですがお電話またはInstagramにてご予約ください。', 'is-error');
+        setMsg('これはデモサイトです。実際の予約は受け付けていません。', 'is-info');
         return;
       }
 
