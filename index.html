@@ -566,6 +566,7 @@
     font-size:.92rem;
   }
   .info-row dd{ margin:0; color:var(--plum-soft); font-size:.95rem; }
+  .info-row dd a{ color:var(--rose-strong); text-decoration:underline; text-underline-offset:3px; }
   .access-cta{
     background:var(--card-bg);
     border-radius:24px;
@@ -655,6 +656,56 @@
     .reservation-form{ grid-template-columns:1fr; }
   }
 
+  /* ---------- FAQ ---------- */
+  .faq-list{ display:grid; gap:16px; max-width:52em; }
+  .faq-item{
+    background:var(--ivory);
+    border:1px solid var(--rose-pale);
+    border-radius:14px;
+    padding:4px 26px;
+  }
+  .faq-item + .faq-item{ margin-top:0; }
+  .faq-item summary{
+    list-style:none;
+    display:flex;
+    align-items:center;
+    gap:18px;
+    padding:22px 0;
+    cursor:pointer;
+    font-family:var(--font-jp-serif);
+    font-size:1.02rem;
+    color:var(--plum);
+  }
+  .faq-item summary::-webkit-details-marker{ display:none; }
+  .faq-q-mark{
+    flex:none;
+    width:36px; height:36px;
+    border-radius:50% 50% 10% 10% / 60% 60% 10% 10%;
+    background:var(--rose-pale);
+    display:flex; align-items:center; justify-content:center;
+    font-family:var(--font-display); font-style:italic; font-weight:600;
+    color:var(--rose-strong); font-size:.9rem;
+  }
+  .faq-item[open] .faq-q-mark{ background:var(--rose); color:var(--ivory); }
+  .faq-item summary .faq-q-text{ flex:1; }
+  .faq-chevron{
+    flex:none;
+    color:var(--gold);
+    font-size:.85rem;
+    transition:transform .25s ease;
+  }
+  .faq-item[open] .faq-chevron{ transform:rotate(180deg); }
+  .faq-answer{
+    padding:0 0 26px 54px;
+    color:var(--plum-soft);
+    font-size:.95rem;
+    line-height:1.9;
+  }
+  @media (max-width:640px){
+    .faq-item{ padding:4px 18px; }
+    .faq-answer{ padding-left:0; }
+  }
+
   /* ---------- Footer ---------- */
   footer{
     position:relative;
@@ -709,6 +760,7 @@
     font-size:.78rem;
     color:rgba(251,246,241,.5);
   }
+  .footer-bottom a{ color:inherit; text-decoration:underline; text-underline-offset:3px; }
 
   .reveal{
     opacity:0;
@@ -728,6 +780,7 @@
       <a href="#menu">Menu</a>
       <a href="#gallery">Gallery</a>
       <a href="#voice">Voice</a>
+      <a href="#faq">FAQ</a>
       <a href="#access">Access</a>
     </nav>
     <a href="#access" class="btn btn-primary nav-cta">ご予約</a>
@@ -749,7 +802,7 @@
           <p class="hero-copy">サンディング(爪表面を削る工程)不要のパラジェルを使用し、地爪にやさしく上質な仕上がりを追求しています。他のお客様と顔を合わせない、完全予約制のプライベートサロンです。</p>
           <div class="hero-actions">
             <a href="#access" class="btn btn-primary">ご予約はこちら</a>
-            <a href="#" class="btn btn-ghost">Instagramを見る</a>
+            <a href="https://www.instagram.com/producenail" class="btn btn-ghost" target="_blank" rel="noopener">Instagramを見る</a>
           </div>
         </div>
         <div class="hero-photo">
@@ -976,7 +1029,46 @@
     </div>
   </section>
 
-  <section id="access">
+  <section id="faq">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="eyebrow">FAQ</span>
+        <h2>よくあるご質問</h2>
+      </div>
+      <div class="faq-list">
+        <details class="faq-item reveal">
+          <summary><span class="faq-q-mark">Q</span><span class="faq-q-text">パラジェルと通常のジェルネイルはどう違うのですか？</span><span class="faq-chevron">&#9660;</span></summary>
+          <p class="faq-answer">パラジェルはサンディング(爪表面を削る工程)が不要なため、地爪への負担が少ないのが特長です。薄爪・深爪の方や、爪を傷めたくない方にも安心してお使いいただけます。</p>
+        </details>
+        <details class="faq-item reveal">
+          <summary><span class="faq-q-mark">Q</span><span class="faq-q-text">施術にはどのくらい時間がかかりますか？</span><span class="faq-chevron">&#9660;</span></summary>
+          <p class="faq-answer">メニューやデザインの内容によって異なりますが、目安として1時間〜2時間程度です。詳しい所要時間はご予約時にお気軽にお問い合わせください。</p>
+        </details>
+        <details class="faq-item reveal">
+          <summary><span class="faq-q-mark">Q</span><span class="faq-q-text">爪が薄い・傷みやすいのですが施術できますか？</span><span class="faq-chevron">&#9660;</span></summary>
+          <p class="faq-answer">サンディング不要のパラジェルを使用しているため、薄爪・深爪の方にもご対応可能です。お爪の状態を拝見しながら、無理のない仕上がりをご提案いたします。</p>
+        </details>
+        <details class="faq-item reveal">
+          <summary><span class="faq-q-mark">Q</span><span class="faq-q-text">どのくらいの頻度でお付け替えが必要ですか？</span><span class="faq-chevron">&#9660;</span></summary>
+          <p class="faq-answer">爪の伸びる速さには個人差がありますが、目安として3〜4週間に一度のお付け替えをおすすめしております。</p>
+        </details>
+        <details class="faq-item reveal">
+          <summary><span class="faq-q-mark">Q</span><span class="faq-q-text">デザインの持ち込みや画像での相談はできますか？</span><span class="faq-chevron">&#9660;</span></summary>
+          <p class="faq-answer">お気に入りの画像やイメージをお持ちいただければ、お爪の形やお好みに合わせてご提案いたします。Instagramの投稿を見てご希望をお伝えいただくのもおすすめです。</p>
+        </details>
+        <details class="faq-item reveal">
+          <summary><span class="faq-q-mark">Q</span><span class="faq-q-text">ご予約のキャンセル・変更はどうすればいいですか？</span><span class="faq-chevron">&#9660;</span></summary>
+          <p class="faq-answer">お電話またはInstagramのDMより、できるだけお早めにご連絡くださいませ。当日キャンセルの場合はキャンセル料が発生する場合がございます。</p>
+        </details>
+        <details class="faq-item reveal">
+          <summary><span class="faq-q-mark">Q</span><span class="faq-q-text">お支払い方法を教えてください。</span><span class="faq-chevron">&#9660;</span></summary>
+          <p class="faq-answer">現金でのお支払いに対応しております。その他のお支払い方法については、ご予約時にお問い合わせください。</p>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <section id="access" class="section-alt">
     <div class="wrap">
       <div class="section-head reveal">
         <span class="eyebrow">Access &amp; Reservation</span>
@@ -1002,14 +1094,14 @@
           </div>
           <div class="info-row">
             <dt>Instagram</dt>
-            <dd>【@アカウント名をご入力ください】</dd>
+            <dd><a href="https://www.instagram.com/producenail" target="_blank" rel="noopener">@producenail</a></dd>
           </div>
         </dl>
         <div class="access-cta reveal">
           <h3 class="jp-serif">特別なひとときを、指先から。</h3>
           <p>ご予約・お問い合わせはお電話またはInstagramのDMにて承っております。</p>
           <a href="#" class="btn btn-primary">電話でご予約</a>
-          <a href="#" class="btn btn-ghost">Instagramでご予約</a>
+          <a href="https://www.instagram.com/producenail" class="btn btn-ghost" target="_blank" rel="noopener">Instagramでご予約</a>
         </div>
       </div>
 
@@ -1075,12 +1167,13 @@
         <a href="#menu">Menu</a>
         <a href="#gallery">Gallery</a>
         <a href="#voice">Voice</a>
+        <a href="#faq">FAQ</a>
         <a href="#access">Access</a>
       </nav>
     </div>
     <div class="footer-bottom">
       <span>&copy; 2026 Produce nail. All rights reserved.</span>
-      <span>Instagram &#8226; LINE</span>
+      <span><a href="https://www.instagram.com/producenail" target="_blank" rel="noopener">Instagram</a> &#8226; LINE</span>
     </div>
   </div>
 </footer>

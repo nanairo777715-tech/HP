@@ -18,10 +18,10 @@
 - モチーフ: 「爪先(アーチ)」の形をスウォッチ・カード・ボタンに一貫使用
 
 ## 構成セクション
-Hero(今月のカラーパレット付き) / Concept / Menu(パラジェル・ハンドケア・オプション) / Gallery(カラースウォッチ) / Voice(お客様の声) / Access(アクセス・予約) / Footer
+Hero(今月のカラーパレット付き) / Concept / Menu(パラジェル・ハンドケア・オプション) / Gallery(カラースウォッチ) / Voice(お客様の声) / FAQ(よくあるご質問、7問) / Access(アクセス・予約) / Footer
 
 ## 要カスタマイズ箇所(【】で明示)
-- 住所・電話番号・Instagramアカウント名(Access セクション)
+- 住所・電話番号(Access セクション)。Instagramは `@producenail`(https://www.instagram.com/producenail)で設定済み — Hero・Access(情報欄・CTAボタン)・フッターの計4箇所すべてリンク済み
 - メニュー価格・営業時間・定休日は仮の例。実際の内容に合わせて `index.html` を編集
 - ロゴ・店名は "Produce nail" で固定表示。変更する場合は `index.html` 内を検索して置換
 
@@ -43,3 +43,4 @@ Hero(今月のカラーパレット付き) / Concept / Menu(パラジェル・�
 - 初版デザイン提案 完成(2026-07-29)
 - Gallery を実写真8枚に差し替え完了、GitHub Pagesで公開開始(2026-08-19)
 - 予約フォーム(GAS + Googleカレンダー連携)実装・実データで動作検証済み。ただし本サイトは制作デモのため、送信自体は無効化して公開(2026-08-19)
+- Instagramリンクを実アドレス(https://www.instagram.com/producenail)に設定、FAQセクション(7問、`<details>`アコーディオン)を Voice と Access の間に追加。ナビ・フッターにも FAQ リンク追加(2026-09-02)。**未push**(このリポジトリは https://github.com/nanairo777715-tech/HP で公開中 — 公開サイトに反映するにはユーザーがpushする必要あり)
