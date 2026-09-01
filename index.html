@@ -1078,19 +1078,19 @@
         <dl class="info-list reveal">
           <div class="info-row">
             <dt>住所</dt>
-            <dd>【住所をご入力ください】</dd>
+            <dd>東京都中央区京橋2-5-7<br>日土地京橋ビル地下1階 BodyAxis内</dd>
           </div>
           <div class="info-row">
             <dt>営業時間</dt>
-            <dd>11:00 &#8211; 19:00&#12288;(最終受付 17:30)</dd>
+            <dd>平日 10:00 &#8211; 21:30<br>土日祝 9:30 &#8211; 20:00</dd>
           </div>
           <div class="info-row">
             <dt>定休日</dt>
-            <dd>月曜日・第3日曜日</dd>
+            <dd>不定休</dd>
           </div>
           <div class="info-row">
             <dt>TEL</dt>
-            <dd>【電話番号をご入力ください】</dd>
+            <dd><a href="tel:09053153224">090-5315-3224</a></dd>
           </div>
           <div class="info-row">
             <dt>Instagram</dt>
@@ -1100,7 +1100,7 @@
         <div class="access-cta reveal">
           <h3 class="jp-serif">特別なひとときを、指先から。</h3>
           <p>ご予約・お問い合わせはお電話またはInstagramのDMにて承っております。</p>
-          <a href="#" class="btn btn-primary">電話でご予約</a>
+          <a href="tel:09053153224" class="btn btn-primary">電話でご予約</a>
           <a href="https://www.instagram.com/producenail" class="btn btn-ghost" target="_blank" rel="noopener">Instagramでご予約</a>
         </div>
       </div>
@@ -1149,7 +1149,7 @@
           <button type="submit" class="btn btn-primary">この内容で予約を送信する</button>
         </form>
         <p id="reservationMsg" class="reservation-msg" role="status" aria-live="polite"></p>
-        <p class="reservation-note">&#8226; 定休日(月曜・第3日曜)および営業時間外(11:00〜最終受付17:30)はご予約いただけません。</p>
+        <p class="reservation-note">&#8226; 営業時間(平日10:00〜21:30・土日祝9:30〜20:00)外はご予約いただけません。定休日は不定休のため、営業日はお電話またはInstagramにてご確認ください。</p>
       </div>
     </div>
   </section>
@@ -1214,10 +1214,10 @@
 
   function pad2(n){ return n < 10 ? '0' + n : '' + n; }
 
-  function isClosedDay(dateObj){
-    var day = dateObj.getDay(); // 0=日, 1=月
-    var isThirdSunday = day === 0 && Math.ceil(dateObj.getDate() / 7) === 3;
-    return day === 1 || isThirdSunday;
+  // 土日祝は営業時間が異なるが、祝日そのものはこのスクリプトだけでは判定できないため土日のみで判定する
+  function isWeekend(dateObj){
+    var day = dateObj.getDay(); // 0=日, 6=土
+    return day === 0 || day === 6;
   }
 
   function setMsg(text, type){
@@ -1226,16 +1226,20 @@
     rsvMsg.className = 'reservation-msg' + (type ? ' ' + type : '');
   }
 
-  if(rsvTimeSelect){
-    var timeOpts = ['<option value="" disabled selected>選択してください</option>'];
-    for(var h = 11; h <= 17; h++){
-      for(var m = 0; m < 60; m += 30){
-        if(h === 17 && m > 30) continue; // 最終受付 17:30
-        var label = pad2(h) + ':' + pad2(m);
-        timeOpts.push('<option value="' + label + '">' + label + '</option>');
-      }
+  function buildTimeOptions(dateObj){
+    var weekend = dateObj ? isWeekend(dateObj) : false;
+    var startMinutes = weekend ? 9 * 60 + 30 : 10 * 60;
+    var endMinutes = weekend ? 20 * 60 : 21 * 60 + 30;
+    var opts = ['<option value="" disabled selected>選択してください</option>'];
+    for(var t = startMinutes; t <= endMinutes; t += 30){
+      var label = pad2(Math.floor(t / 60)) + ':' + pad2(t % 60);
+      opts.push('<option value="' + label + '">' + label + '</option>');
     }
-    rsvTimeSelect.innerHTML = timeOpts.join('');
+    return opts.join('');
+  }
+
+  if(rsvTimeSelect){
+    rsvTimeSelect.innerHTML = buildTimeOptions(null);
   }
 
   if(rsvDateInput){
@@ -1244,11 +1248,8 @@
     rsvDateInput.addEventListener('change', function(){
       if(!rsvDateInput.value) return;
       var d = new Date(rsvDateInput.value + 'T00:00:00');
-      if(isClosedDay(d)){
-        setMsg('選択された日は定休日(月曜・第3日曜)です。別の日をお選びください。', 'is-error');
-      } else {
-        setMsg('', '');
-      }
+      if(rsvTimeSelect){ rsvTimeSelect.innerHTML = buildTimeOptions(d); }
+      setMsg('', '');
     });
   }
 
@@ -1258,12 +1259,6 @@
 
       if(!RESERVATION_ENDPOINT){
         setMsg('これはデモサイトです。実際の予約は受け付けていません。', 'is-info');
-        return;
-      }
-
-      var d = new Date(rsvDateInput.value + 'T00:00:00');
-      if(isClosedDay(d)){
-        setMsg('選択された日は定休日です。別の日をお選びください。', 'is-error');
         return;
       }
 

@@ -20,9 +20,16 @@
 ## 構成セクション
 Hero(今月のカラーパレット付き) / Concept / Menu(パラジェル・ハンドケア・オプション) / Gallery(カラースウォッチ) / Voice(お客様の声) / FAQ(よくあるご質問、7問) / Access(アクセス・予約) / Footer
 
-## 要カスタマイズ箇所(【】で明示)
-- 住所・電話番号(Access セクション)。Instagramは `@producenail`(https://www.instagram.com/producenail)で設定済み — Hero・Access(情報欄・CTAボタン)・フッターの計4箇所すべてリンク済み
-- メニュー価格・営業時間・定休日は仮の例。実際の内容に合わせて `index.html` を編集
+## 店舗情報(実データ設定済み・2026-09-02時点)
+- 店名: パラジェル認定サロン Produce nail
+- 住所: 東京都中央区京橋2-5-7 日土地京橋ビル地下1階 BodyAxis内
+- 営業時間: 平日 10:00〜21:30 / 土日祝 9:30〜20:00(祝日は自動判定できないため、予約フォームの時間帯は土日と同じ扱い)
+- 定休日: 不定休
+- TEL: 090-5315-3224(`tel:` リンク設定済み、Access情報欄と「電話でご予約」ボタンの両方)
+- Instagram: `@producenail`(https://www.instagram.com/producenail)— Hero・Access(情報欄・CTAボタン)・フッターの計4箇所すべてリンク済み
+
+## 要カスタマイズ箇所
+- メニュー価格は仮の例。実際の内容に合わせて `index.html` を編集
 - ロゴ・店名は "Produce nail" で固定表示。変更する場合は `index.html` 内を検索して置換
 
 ## 画像について
@@ -43,4 +50,5 @@ Hero(今月のカラーパレット付き) / Concept / Menu(パラジェル・�
 - 初版デザイン提案 完成(2026-07-29)
 - Gallery を実写真8枚に差し替え完了、GitHub Pagesで公開開始(2026-08-19)
 - 予約フォーム(GAS + Googleカレンダー連携)実装・実データで動作検証済み。ただし本サイトは制作デモのため、送信自体は無効化して公開(2026-08-19)
-- Instagramリンクを実アドレス(https://www.instagram.com/producenail)に設定、FAQセクション(7問、`<details>`アコーディオン)を Voice と Access の間に追加。ナビ・フッターにも FAQ リンク追加(2026-09-02)。**未push**(このリポジトリは https://github.com/nanairo777715-tech/HP で公開中 — 公開サイトに反映するにはユーザーがpushする必要あり)
+- Instagramリンクを実アドレス(https://www.instagram.com/producenail)に設定、FAQセクション(7問、`<details>`アコーディオン)を Voice と Access の間に追加。ナビ・フッターにも FAQ リンク追加。コミット・push済み、公開サイトに反映済み(2026-09-02)
+- 住所・営業時間・定休日・電話番号を実データに更新(2026-09-02)。営業時間が平日/土日祝で異なる方式に変わったため、予約フォームの時間選択(`buildTimeOptions()`)と `gas/Code.gs` の営業時間バリデーションも土日祝と平日で自動的に切り替わるよう修正。定休日が「不定休」になったため、従来の「月曜・第3日曜」固定チェックは撤廃(`index.html`・`gas/Code.gs` 両方から削除)

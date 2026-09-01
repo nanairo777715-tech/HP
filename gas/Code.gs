@@ -10,10 +10,12 @@
 // ▼ 新規予約が入るたびにメール通知を受け取りたいアドレス。不要なら空文字 '' にしてください。
 var OWNER_EMAIL = 'your-email@gmail.com';
 
-// ▼ 営業時間・定休日・メニューごとの所要時間(サイトの表示内容と合わせています)
-var OPEN_HOUR = 11;        // 営業開始 11:00
-var LAST_ACCEPT_HOUR = 17; // 最終受付 17:30
-var LAST_ACCEPT_MIN = 30;
+// ▼ 営業時間・メニューごとの所要時間(サイトの表示内容と合わせています)
+//   定休日は不定休のため固定の曜日チェックはせず、ダブルブッキング確認(下記)のみで判定します。
+var WEEKDAY_OPEN_HOUR = 10, WEEKDAY_OPEN_MIN = 0;    // 平日 営業開始 10:00
+var WEEKDAY_CLOSE_HOUR = 21, WEEKDAY_CLOSE_MIN = 30; // 平日 営業終了 21:30
+var WEEKEND_OPEN_HOUR = 9, WEEKEND_OPEN_MIN = 30;    // 土日祝 営業開始 9:30
+var WEEKEND_CLOSE_HOUR = 20, WEEKEND_CLOSE_MIN = 0;  // 土日祝 営業終了 20:00
 
 var MENU_DURATIONS = {
   'ワンカラー': 90,
@@ -55,20 +57,20 @@ function doPost(e) {
       throw new Error('過去の日時は指定できません。');
     }
 
-    // 定休日チェック(月曜 or 第3日曜)
-    var day = start.getDay(); // 0=日, 1=月
-    var isThirdSunday = day === 0 && Math.ceil(start.getDate() / 7) === 3;
-    if (day === 1 || isThirdSunday) {
-      throw new Error('その日は定休日です(月曜・第3日曜)。');
-    }
+    // 営業時間チェック(土日祝は時間が異なるが、祝日はこのスクリプトだけでは判定できないため土日のみで判定)
+    var day = start.getDay(); // 0=日, 6=土
+    var isWeekend = day === 0 || day === 6;
+    var openHour = isWeekend ? WEEKEND_OPEN_HOUR : WEEKDAY_OPEN_HOUR;
+    var openMin = isWeekend ? WEEKEND_OPEN_MIN : WEEKDAY_OPEN_MIN;
+    var closeHour = isWeekend ? WEEKEND_CLOSE_HOUR : WEEKDAY_CLOSE_HOUR;
+    var closeMin = isWeekend ? WEEKEND_CLOSE_MIN : WEEKDAY_CLOSE_MIN;
 
-    // 営業時間チェック(11:00 〜 最終受付17:30)
     var h = start.getHours();
     var m = start.getMinutes();
-    var afterOpen = h > OPEN_HOUR || (h === OPEN_HOUR && m >= 0);
-    var beforeLastAccept = h < LAST_ACCEPT_HOUR || (h === LAST_ACCEPT_HOUR && m <= LAST_ACCEPT_MIN);
-    if (!afterOpen || !beforeLastAccept) {
-      throw new Error('営業時間外です(11:00〜最終受付17:30)。');
+    var afterOpen = h > openHour || (h === openHour && m >= openMin);
+    var beforeClose = h < closeHour || (h === closeHour && m <= closeMin);
+    if (!afterOpen || !beforeClose) {
+      throw new Error('営業時間外です(平日10:00〜21:30・土日祝9:30〜20:00)。');
     }
 
     var durationMin = MENU_DURATIONS[menu] || 60;
