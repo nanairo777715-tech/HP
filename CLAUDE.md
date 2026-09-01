@@ -27,6 +27,7 @@ Hero(今月のカラーパレット付き) / Concept / Menu(パラジェル・�
 - 定休日: 不定休
 - TEL: 090-5315-3224(`tel:` リンク設定済み、Access情報欄と「電話でご予約」ボタンの両方)
 - Instagram: `@producenail`(https://www.instagram.com/producenail)— Hero・Access(情報欄・CTAボタン)・フッターの計4箇所すべてリンク済み
+- Googleマップ: Accessセクションの情報欄とCTAカードの下に埋め込み地図(`.access-map` の `<iframe>`)を設置済み。APIキー不要の `https://www.google.com/maps?q=住所&output=embed` 形式
 
 ## 要カスタマイズ箇所
 - メニュー価格は仮の例。実際の内容に合わせて `index.html` を編集
@@ -52,3 +53,4 @@ Hero(今月のカラーパレット付き) / Concept / Menu(パラジェル・�
 - 予約フォーム(GAS + Googleカレンダー連携)実装・実データで動作検証済み。ただし本サイトは制作デモのため、送信自体は無効化して公開(2026-08-19)
 - Instagramリンクを実アドレス(https://www.instagram.com/producenail)に設定、FAQセクション(7問、`<details>`アコーディオン)を Voice と Access の間に追加。ナビ・フッターにも FAQ リンク追加。コミット・push済み、公開サイトに反映済み(2026-09-02)
 - 住所・営業時間・定休日・電話番号を実データに更新(2026-09-02)。営業時間が平日/土日祝で異なる方式に変わったため、予約フォームの時間選択(`buildTimeOptions()`)と `gas/Code.gs` の営業時間バリデーションも土日祝と平日で自動的に切り替わるよう修正。定休日が「不定休」になったため、従来の「月曜・第3日曜」固定チェックは撤廃(`index.html`・`gas/Code.gs` 両方から削除)
+- AccessセクションにGoogleマップ埋め込み(`.access-map`)を追加(2026-09-02)。APIキー不要の `google.com/maps?q=...&output=embed` 形式で、住所(東京都中央区京橋2-5-7 日土地京橋ビル)をクエリに使用
