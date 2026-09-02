@@ -350,17 +350,33 @@
     color:var(--plum-soft);
     letter-spacing:.05em;
   }
-  .palette-row{
-    display:grid;
-    grid-template-columns:repeat(6,1fr);
-    gap:clamp(10px,2vw,20px);
+  .palette-groups{ display:grid; gap:30px; }
+  .palette-group-label{
+    font-family:var(--font-jp-sans);
+    font-size:.85rem;
+    letter-spacing:.05em;
+    color:var(--rose-strong);
+    margin-bottom:14px;
+    text-align:center;
   }
-  @media (max-width:760px){ .palette-row{ grid-template-columns:repeat(3,1fr); } }
+  .palette-row{
+    display:flex;
+    flex-wrap:nowrap;
+    justify-content:center;
+    gap:clamp(12px,3vw,26px);
+  }
+  .palette-row > div{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    width:clamp(44px,10vw,68px);
+  }
   .nail-tip{
-    aspect-ratio:.72;
-    border-radius:50% 50% 10% 10% / 58% 58% 10% 10%;
+    width:clamp(34px,8vw,52px);
+    height:clamp(34px,8vw,52px);
+    border-radius:50%;
     position:relative;
-    box-shadow:inset 0 2px 3px rgba(255,255,255,.35), inset 0 -10px 16px rgba(0,0,0,.14), 0 10px 20px -14px rgba(0,0,0,.35);
+    box-shadow:inset 0 1px 2px rgba(255,255,255,.35), inset 0 -4px 7px rgba(0,0,0,.14), 0 4px 8px -6px rgba(0,0,0,.3);
   }
   .nail-tip::after{
     content:"";
@@ -829,32 +845,50 @@
       <div class="palette-strip">
         <div class="palette-head">
           <h2 class="jp-serif" style="font-style:normal;">This Season&#39;s Palette</h2>
-          <span>今月のおすすめカラー6色</span>
+          <span>今月のおすすめカラー8色</span>
         </div>
-        <div class="palette-row">
-          <div>
-            <div class="nail-tip" style="background:linear-gradient(160deg,#D9AEB4,#B8707D);"></div>
-            <p class="swatch-label">くすみローズ</p>
+        <div class="palette-groups">
+          <div class="palette-group">
+            <p class="palette-group-label">ブルベ向け</p>
+            <div class="palette-row">
+              <div>
+                <div class="nail-tip" style="background:linear-gradient(160deg,#D9AEB4,#B8707D);"></div>
+                <p class="swatch-label">くすみローズ</p>
+              </div>
+              <div>
+                <div class="nail-tip" style="background:linear-gradient(160deg,#C3A5AC,#A98A93);"></div>
+                <p class="swatch-label">スモーキーモーヴ</p>
+              </div>
+              <div>
+                <div class="nail-tip" style="background:linear-gradient(160deg,#8FA3B3,#5C7488);"></div>
+                <p class="swatch-label">スモークブルー</p>
+              </div>
+              <div>
+                <div class="nail-tip" style="background:linear-gradient(160deg,#8C3E4C,#6E2F3B);"></div>
+                <p class="swatch-label">ディープボルドー</p>
+              </div>
+            </div>
           </div>
-          <div>
-            <div class="nail-tip" style="background:linear-gradient(160deg,#F1DEC4,#E4CBAE);"></div>
-            <p class="swatch-label">シャンパンベージュ</p>
-          </div>
-          <div>
-            <div class="nail-tip" style="background:linear-gradient(160deg,#C3A5AC,#A98A93);"></div>
-            <p class="swatch-label">スモーキーモーヴ</p>
-          </div>
-          <div>
-            <div class="nail-tip" style="background:linear-gradient(160deg,#CBA184,#B99075);"></div>
-            <p class="swatch-label">ミルクブラウン</p>
-          </div>
-          <div>
-            <div class="nail-tip" style="background:linear-gradient(160deg,#D7BA80,#C6A15B);"></div>
-            <p class="swatch-label">アンティークゴールド</p>
-          </div>
-          <div>
-            <div class="nail-tip" style="background:linear-gradient(160deg,#8C3E4C,#6E2F3B);"></div>
-            <p class="swatch-label">ディープボルドー</p>
+          <div class="palette-group">
+            <p class="palette-group-label">イエベ向け</p>
+            <div class="palette-row">
+              <div>
+                <div class="nail-tip" style="background:linear-gradient(160deg,#F1DEC4,#E4CBAE);"></div>
+                <p class="swatch-label">シャンパンベージュ</p>
+              </div>
+              <div>
+                <div class="nail-tip" style="background:linear-gradient(160deg,#CBA184,#B99075);"></div>
+                <p class="swatch-label">ミルクブラウン</p>
+              </div>
+              <div>
+                <div class="nail-tip" style="background:linear-gradient(160deg,#D7BA80,#C6A15B);"></div>
+                <p class="swatch-label">アンティークゴールド</p>
+              </div>
+              <div>
+                <div class="nail-tip" style="background:linear-gradient(160deg,#D98B6B,#B96A4A);"></div>
+                <p class="swatch-label">テラコッタ</p>
+              </div>
+            </div>
           </div>
         </div>
       </div>
